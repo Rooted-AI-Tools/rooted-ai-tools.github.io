@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rooted AI</title>
+<meta name="description" content="A directory of public-interest and community-oriented AI tools and accountability frameworks for environment, climate, food security, language, and health.">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; color: #1a1a1a; background: #fff; font-size: 14px; }
+a { color: #1a1a1a; }
+
+/* Header */
+.header { border-bottom: 1px solid #e5e5e5; padding: 18px 24px; }
+.header-inner { max-width: 1080px; margin: 0 auto; }
+.header-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; margin-bottom: 3px; }
+.header-subtitle { font-size: 13px; color: #666; max-width: 600px; line-height: 1.5; }
+.about-toggle { margin-top: 8px; background: none; border: none; font-size: 12px; color: #1a1a1a; cursor: pointer; padding: 0; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; }
+.about-text { margin-top: 10px; font-size: 12.5px; color: #555; line-height: 1.6; max-width: 640px; }
+.about-text p { margin: 0 0 8px; }
+.about-text p:last-child { margin: 0; }
+
+/* Layout */
+.layout { display: flex; max-width: 1080px; margin: 0 auto; min-height: calc(100vh - 80px); }
+.sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid #e5e5e5; padding: 16px 14px 16px 24px; font-size: 13px; }
+.main { flex: 1; padding: 16px 24px 48px; }
+
+/* Sidebar */
+.side-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em; color: #999; margin-bottom: 8px; font-family: 'IBM Plex Sans', sans-serif; }
+.side-item { display: flex; justify-content: space-between; padding: 5px 8px; border-radius: 3px; cursor: pointer; font-size: 13px; color: #555; transition: background 0.1s; }
+.side-item:hover { background: #f5f5f5; }
+.side-item.active { background: #f0f0f0; font-weight: 600; color: #1a1a1a; }
+.side-count { font-size: 11.5px; color: #aaa; }
+.side-section { border-top: 1px solid #eee; margin: 12px 0; padding-top: 12px; }
+
+/* Contribute */
+.contribute { border-top: 1px solid #eee; margin-top: 16px; padding-top: 16px; }
+.contribute-title { font-size: 12.5px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+.contribute-desc { font-size: 12px; color: #666; line-height: 1.5; margin: 0 0 10px; }
+.contribute input, .contribute textarea {
+  width: 100%; padding: 7px 10px; border: 1px solid #d5d5d5; border-radius: 3px;
+  font-size: 12px; font-family: 'IBM Plex Sans', sans-serif; outline: none; box-sizing: border-box;
+}
+.contribute input { margin-bottom: 6px; }
+.contribute textarea { margin-bottom: 8px; resize: vertical; }
+.contribute button {
+  display: inline-block; padding: 6px 14px; background: #1a1a1a; color: #fff;
+  border-radius: 3px; font-size: 12px; font-weight: 500; border: none; cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+/* Search */
+.search-input {
+  width: 100%; padding: 9px 12px; border: 1px solid #d5d5d5; border-radius: 3px;
+  font-size: 13.5px; font-family: 'IBM Plex Sans', sans-serif; outline: none; background: #fff; box-sizing: border-box;
+}
+.search-input:focus { border-color: #999; }
+.search-input::placeholder { color: #aaa; }
+.result-count { font-size: 12.5px; color: #999; margin: 12px 0 14px; }
+
+/* Tool rows */
+.tool-row { border-bottom: 1px solid #eee; padding: 14px 0; cursor: pointer; transition: background 0.1s; }
+.tool-row:hover { background: #fafafa; margin: 0 -12px; padding: 14px 12px; }
+.tool-row:last-child { border-bottom: none; }
+.tool-name { font-size: 14.5px; font-weight: 600; font-family: 'Source Serif 4', Georgia, serif; }
+.tool-org { font-size: 12.5px; color: #888; margin-top: 2px; }
+.tool-desc { font-size: 13px; color: #555; line-height: 1.5; margin-top: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tool-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+
+/* Pills */
+.pill { display: inline-block; padding: 1px 7px; border-radius: 2px; font-size: 11.5px; font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; }
+.pill-basic { background: #e8f5e9; color: #1a1a1a; }
+.pill-intermediate { background: #fff3e0; color: #1a1a1a; }
+.pill-advanced { background: #fce4ec; color: #1a1a1a; }
+.pill-free { background: #e3f2fd; color: #1565c0; }
+.pill-oss { background: #f3e5f5; color: #6a1b9a; }
+.pill-framework { background: #f0f0f0; color: #555; }
+.theme-tag { display: inline-block; padding: 1px 6px; border-radius: 2px; font-size: 11px; background: #f5f5f5; color: #666; border: 1px solid #e8e8e8; }
+
+/* Drawer */
+.overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.25); display: flex; justify-content: flex-end; }
+.overlay.hidden { display: none; }
+.drawer { width: 500px; max-width: 92vw; background: #fff; height: 100%; overflow-y: auto; padding: 24px 28px; border-left: 1px solid #ddd; }
+.drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.drawer-close { background: none; border: none; font-size: 18px; cursor: pointer; color: #aaa; padding: 2px 6px; flex-shrink: 0; }
+.drawer-title { font-size: 20px; font-weight: 700; font-family: 'Source Serif 4', Georgia, serif; line-height: 1.3; margin: 0 0 2px; padding-right: 30px; }
+.drawer-org { font-size: 13px; color: #888; }
+.drawer-desc { font-size: 14px; color: #333; line-height: 1.7; margin: 0 0 20px; }
+.detail-field { display: flex; gap: 10px; padding: 7px 0; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+.detail-field:last-child { border-bottom: none; }
+.detail-label { min-width: 100px; flex-shrink: 0; color: #888; font-family: 'Source Serif 4', Georgia, serif; font-size: 12.5px; font-style: italic; }
+.detail-value { color: #333; line-height: 1.5; }
+.drawer-link { display: inline-block; margin-top: 20px; padding: 8px 18px; background: #1a1a1a; color: #fff; border-radius: 3px; font-size: 13px; font-weight: 500; text-decoration: none; }
+
+/* Footer */
+.foot-note { margin-top: 36px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 3px; font-size: 12.5px; color: #777; line-height: 1.6; }
+.foot-note a { color: #1565c0; text-decoration: none; }
+.copyright { margin-top: 20px; font-size: 11.5px; color: #bbb; }
+
+/* Clear filters */
+.clear-btn { background: none; border: none; font-size: 12px; color: #c62828; cursor: pointer; padding: 6px 0; font-family: 'IBM Plex Sans', sans-serif; }
+.clear-link { background: none; border: none; color: #1565c0; cursor: pointer; font-size: 13.5px; font-family: 'IBM Plex Sans', sans-serif; }
+
+/* Responsive */
+@media (max-width: 720px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e5e5e5; padding: 12px 16px; }
+  .main { padding: 12px 16px 48px; }
+  .drawer { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-title">Rooted AI</div>
+    <div class="header-subtitle">A directory of public-interest and community-oriented AI tools and accountability frameworks for environment, climate, food security, language, and health.</div>
+    <div id="about-text" class="about-text">
+      <p>This directory catalogues 22 AI applications and 4 AI accountability frameworks developed across a range of contexts, from community and Indigenous-led initiatives to academic research groups, NGOs, and public-interest projects. The majority are free or open-source.</p>
+      <p>The majority of these applications are also classified as traditional AI, meaning they are purpose-built models that do one specific thing well within a defined scope. Three of the 22 tools use a constrained form of generative AI within a specific domain.</p>
+      <p>The accountability frameworks are non-AI tools that allow researchers or organisations to benchmark or assess the ethics and safety measures in place for deploying some of these tools.</p>
+      <p>Skill levels: Basic (smartphone skills or basic computer literacy) · Intermediate (understanding of digital platforms and data analysis) · Advanced (requires programming or ML skill).</p>
+    </div>
+    <button class="about-toggle" id="about-toggle" onclick="toggleAbout()">Hide details ↑</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <input class="search-input" type="text" id="search" placeholder="Search by name, organisation, language, or description…" oninput="renderTools()">
+    <div class="result-count" id="result-count"></div>
+    <div id="tool-list"></div>
+    <div class="foot-note">
+      This directory was developed by <a href="https://www.aniaki.work" target="_blank" rel="noopener noreferrer">Adrien Tofighi-Niaki</a>, which elaborates on research originally conducted for the <a href="https://www.redaa.org/risks-and-benefits-artificial-intelligence-locally-led-nature-restoration" target="_blank" rel="noopener noreferrer">International Institute for Environment and Development</a>. For questions, concerns or contributions, please <a href="mailto:tofighi.adrien@gmail.com">message me</a>.
+    </div>
+    <div class="copyright">Rooted AI · © 2026</div>
+  </main>
+</div>
+
+<div class="overlay hidden" id="overlay" onclick="closeDrawer()">
+  <div class="drawer" id="drawer" onclick="event.stopPropagation()"></div>
+</div>
+
+<script>
+const TOOLS = [
+  { id:"ai-safety-eval", name:"AI Safety Evaluation (Ai2)", type:"framework", org:"Allen Institute for AI", description:"An open-source suite of tools for evaluating the safety of large language models. Includes WildGuard, WildTeaming, and WildJailbreak, which test LLMs for harmful outputs across 17 languages. Addresses a documented gap in AI safety evaluation, where most existing benchmarks are built primarily for English-speaking, Western contexts.", url:"https://github.com/allenai/safety-eval", themes:[], accessibility:"Free, open-source (Apache 2.0)", languages:["English"], aiType:"N/A (evaluation framework)", skillLevel:"Advanced", skillNote:"GitHub-based evaluation suite, requiring Python and ML evaluation knowledge.", openSource:true, free:true },
+  { id:"ai-fairness-360", name:"AI Fairness 360", type:"framework", org:"IBM Research / Linux Foundation", description:"An open-source toolkit providing over 70 fairness metrics and 9+ bias mitigation algorithms for auditing machine learning systems across fields including race, gender, and socioeconomic status. Available in Python and R. Applied across sectors including criminal justice, healthcare, education, and financial services.", url:"https://ai-fairness-360.org/", themes:[], accessibility:"Free, open-source (Apache 2.0, Linux Foundation)", languages:["English"], aiType:"N/A (evaluation framework)", skillLevel:"Advanced", skillNote:"Python toolkit that requires programming and understanding of ML fairness metrics and bias mitigation.", openSource:true, free:true },
+  { id:"amnesty-toolkit", name:"Amnesty Algorithmic Accountability Toolkit", type:"framework", org:"Amnesty International", description:"A step-by-step investigative guide for researching and challenging AI-related harms in welfare, policing, healthcare, and education systems. Drawing on case studies from Denmark, India, Serbia, the UK, and the US, it provides algorithmic FOI templates, research methodologies, and litigation strategies. Applies international human rights law as its primary accountability standard.", url:"https://www.amnesty.org/en/latest/research/2025/12/algorithmic-accountability-toolkit/", themes:[], accessibility:"Free (published online by Amnesty International); not software/code", languages:["English"], aiType:"N/A (evaluation framework)", skillLevel:"Basic", skillNote:"Published investigative guide designed for non-technical civil society organisations, journalists, and community groups.", openSource:false, free:true },
+  { id:"aekit", name:"Algorithmic Equity Toolkit (AEKit)", type:"framework", org:"ACLU Washington / CAIR-WA / Densho", description:"A community-designed toolkit for identifying and challenging government use of surveillance and automated decision-making systems. Co-created through participatory workshops with grassroots civil rights organisations. Includes flowcharts, plain-language system maps, and questionnaires for public officials.", url:"https://www.aclu-wa.org/AEKit/", themes:[], accessibility:"Free (published online by ACLU of Washington); not software/code", languages:["English"], aiType:"N/A (evaluation framework)", skillLevel:"Basic", skillNote:"Community-designed toolkit for non-technical users to identify and challenge government use of surveillance AI.", openSource:false, free:true },
+  { id:"earth-defenders", name:"Earth Defenders Assistant", type:"application", org:"Awana Digital", description:"An offline-first AI chatbot platform developed in partnership with Indigenous communities. Uses voice-based interaction via WhatsApp to support territorial monitoring, grant management, and knowledge sharing. Operates without internet connectivity, with data stored locally under community control, built using a modular plugin architecture.", url:"https://lab.digital-democracy.org/earth-defenders-assistant/", themes:["Cultural Sovereignty","Forests & Land","Extractives & Pollution"], accessibility:"Free, open-source (MIT License)", languages:["English","Spanish","Portuguese","French","Khmer","Swahili","Thai","Vietnamese"], aiType:"Traditional (generative constrained)", skillLevel:"Advanced", skillNote:"Requires programming or ML skills to deploy custom bots; end-user interaction via WhatsApp is basic.", openSource:true, free:true },
+  { id:"digital-umuganda", name:"Digital Umuganda", type:"application", org:"Digital Umuganda (Rwanda)", description:"A Rwandan AI and open data organisation building speech-to-text models, NLP tools, and open-source datasets for Kinyarwanda and other under-resourced African languages. Working with Mozilla Common Voice and CLEAR Global, it has collected over 2,000 hours of curated voice data. Acts as a certified data controller, ensuring contributors retain agency over how their language data is used.", url:"https://digitalumuganda.com/", themes:["Cultural Sovereignty"], accessibility:"Free, open-source; datasets and models publicly available", languages:["Kinyarwanda","English"], aiType:"Traditional (various)", skillLevel:"Advanced", skillNote:"Models and datasets hosted on GitHub and Hugging Face; requires ML/programming knowledge.", openSource:true, free:true },
+  { id:"masakhane", name:"Masakhane", type:"application", org:"Masakhane Community (30+ African countries)", description:"A grassroots research community of over 1,000 members across 30+ African countries, producing NLP models, datasets, and benchmarks for African languages. Outputs include machine translation systems, named entity recognition for 20 languages, and the MasakhaNEWS classification dataset. Centres African data sovereignty and opposes extractive research practices.", url:"https://www.masakhane.io/home", themes:["Cultural Sovereignty"], accessibility:"Free, open-source; models and datasets on Hugging Face (CC licenses)", languages:["Amharic","Bambara","Chichewa","Ewe","Fon","Ghomala","Hausa","Igbo","Kinyarwanda","Lingala","Luganda","Luo","Moore","Naija Pidgin","Setswana","Shona","Swahili","Tshiluba","Twi","Wolof","Xhosa","Yoruba","Zulu"], aiType:"Traditional (various)", skillLevel:"Advanced", skillNote:"Research community producing NLP models and datasets on GitHub; requires ML/programming expertise.", openSource:true, free:true },
+  { id:"korero-maori", name:"Kōrero Māori", type:"application", org:"Te Hiku Media", description:"An open-source mobile application for collecting oral language recordings in te reo Māori, Hawaiian, and Cook Islands Māori. Datasets feed into speech recognition models (see Papa Reo). All data governed by the Kaitiakitanga License, restricting use to purposes consistent with the values and interests of contributing Indigenous communities.", url:"https://koreromaori.com/", themes:["Cultural Sovereignty"], accessibility:"Free; Kaitiakitanga License (Indigenous data sovereignty, community-governed access)", languages:["Te reo Māori","Hawaiian","Cook Islands Māori"], aiType:"Traditional (data collection for ASR)", skillLevel:"Basic", skillNote:"Mobile app; users read sentences aloud and tap save to contribute speech recordings.", openSource:true, free:true },
+  { id:"cottonace", name:"CottonAce", type:"application", org:"Wadhwani AI", description:"An AI-based pest management early warning system for smallholder cotton farmers in India. Uses image recognition to identify pests from smartphone photos and is available in nine Indian languages on basic Android devices. Designed to reduce crop losses among farmers with limited access to institutional agricultural extension services.", url:"https://www.wadhwaniai.org/programs/pest-management/pest-management-ai-solution/", themes:["Agriculture & Food Security"], accessibility:"Free to end users; not open-source", languages:["English","Hindi","Marathi","Gujarati","Telugu","Kannada","Tamil","Odia","Punjabi"], aiType:"Traditional (computer vision)", skillLevel:"Basic", skillNote:"Smartphone app; farmers photograph pest traps and receive advisories.", openSource:false, free:true },
+  { id:"kuzi", name:"Kuzi", type:"application", org:"Selina Wamucii", description:"An AI early warning system for locust outbreaks delivered via SMS to farmers across East Africa (Uganda, Kenya, Somalia, Ethiopia, Eritrea, Sudan, and Djibouti). Operates through basic mobile technology rather than smartphone apps, reaching farming communities with limited digital infrastructure facing climate-driven pest emergencies.", url:"https://www.selinawamucii.com/kuzi/", themes:["Agriculture & Food Security"], accessibility:"Free to end users (SMS-based); not open-source", languages:["English","Amharic","Kiswahili","Somali"], aiType:"Traditional (predictive)", skillLevel:"Basic", skillNote:"SMS-based; farmers sign up and receive locust alerts on any mobile device.", openSource:false, free:true },
+  { id:"fisheco3", name:"FishEco3", type:"application", org:"PolArctic (Yup'ik & woman-owned)", description:"An AI-powered fisheries management tool using agent-based modelling to create a digital twin of the Arctic and North Pacific oceans. Integrates Indigenous knowledge, satellite data, and scientific measurements to forecast climate impacts on fish stocks. Funded by the US National Science Foundation (SBIR Phase II).", url:"https://www.polarcticllc.com/fish", themes:["Marine & Freshwater","Climate & Disaster","Biodiversity & Wildlife"], accessibility:"Commercial (custom consulting; pricing not public). NSF-funded research outputs may be publicly available.", languages:["English"], aiType:"Traditional (predictive)", skillLevel:"Intermediate", skillNote:"Consultation-based; users interact with agent-based model outputs and dashboards requiring domain expertise.", openSource:false, free:false },
+  { id:"lila", name:"Lila", type:"application", org:"Auroville Consulting", description:"A geospatial decision-support tool combining satellite imagery, GIS mapping, and a proprietary land-cover classification algorithm to assess degraded and unused land for climate mitigation. Focused on India, evaluates land parcels for reforestation, water management, and solar energy potential.", url:"https://thelila.org/", themes:["Forests & Land","Climate & Disaster","Agriculture & Food Security"], accessibility:"Pricing unclear; likely consultation-based. Not open-source, but hosts open-source models from others.", languages:["English"], aiType:"Traditional (computer vision / geospatial analytics)", skillLevel:"Intermediate", skillNote:"Web-based geospatial platform; requires understanding of GIS mapping and satellite data interpretation.", openSource:false, free:false },
+  { id:"forestnet", name:"ForestNet", type:"application", org:"Stanford University", description:"An open-source deep learning model classifying drivers of tropical deforestation from satellite imagery, distinguishing between plantation agriculture, smallholder clearing, and other land use changes. Designed to support environmental monitoring by researchers, civil society organisations, and investigative journalists.", url:"https://stanfordmlgroup.github.io/projects/forestnet/", themes:["Forests & Land","Extractives & Pollution"], accessibility:"Free, open-source; code and model on GitHub", languages:["English"], aiType:"Traditional (computer vision)", skillLevel:"Advanced", skillNote:"Open-source deep learning model on GitHub; requires Python, PyTorch, and satellite imagery processing skills.", openSource:true, free:true },
+  { id:"flood-forecasting", name:"Flood Forecasting API", type:"application", org:"Google Research", description:"A machine learning-based flood prediction system providing early warnings for flood-vulnerable communities, with a focus on the Global South. Predicts flood events several days in advance using hydrological data. Available via API for disaster response agencies, governments, and humanitarian organisations.", url:"https://sites.research.google/gr/floodforecasting/api-waitlist/", themes:["Climate & Disaster"], accessibility:"Free (CC BY 4.0); requires API waitlist approval; non-commercial use only.", languages:["English"], aiType:"Traditional (predictive)", skillLevel:"Advanced", skillNote:"API requiring Google Cloud Project setup and programming to integrate flood forecast data.", openSource:false, free:true },
+  { id:"arbimon", name:"Arbimon", type:"application", org:"Rainforest Connection", description:"A free, open-access ecoacoustic analysis platform hosting over 170 million wildlife recordings from 100+ countries. Originally designed to detect illegal logging through chainsaw and gunshot recognition, expanded into comprehensive biodiversity monitoring. Data contributors retain ownership; supports partnerships with enforcement agencies.", url:"https://arbimon.org/", themes:["Forests & Land","Biodiversity & Wildlife"], accessibility:"Free (open-access platform; account required); not open-source", languages:["English","Spanish"], aiType:"Traditional (predictive)", skillLevel:"Intermediate", skillNote:"Web platform for uploading and analysing ecoacoustic recordings; requires data analysis skills.", openSource:false, free:true },
+  { id:"birdnet", name:"BirdNET Sound ID App", type:"application", org:"Cornell Lab of Ornithology", description:"A free AI-powered bird species identification application using deep learning to classify bird calls from audio recordings. Operates offline on any smartphone. Widely used by citizen scientists, conservation groups, and researchers for biodiversity monitoring. Underlying model is open-source; supports thousands of species worldwide.", url:"https://birdnet.cornell.edu/", themes:["Biodiversity & Wildlife"], accessibility:"Free, open-source (app and model)", languages:["English","German","French","Spanish","Portuguese","Italian","Dutch","Polish","Czech","Swedish","Danish","Finnish","Japanese"], aiType:"Traditional (predictive)", skillLevel:"Basic", skillNote:"Mobile app; point phone at bird sounds to get species identification.", openSource:true, free:true },
+  { id:"reefos", name:"ReefOS", type:"application", org:"Coral Gardeners", description:"An AI-powered coral reef monitoring platform using underwater cameras and environmental sensors to assess reef health and guide restoration. Deployed in Fiji and French Polynesia, supports Pacific Island communities facing ocean warming and acidification.", url:"https://labs.coralgardeners.org/reefos", themes:["Marine & Freshwater","Biodiversity & Wildlife","Climate & Disaster"], accessibility:"Pricing unclear; deployed through partnerships, likely grant-funded. Not open-source.", languages:["English","French"], aiType:"Traditional (computer vision)", skillLevel:"Intermediate", skillNote:"Deployed through partnerships; involves underwater camera hardware and environmental sensor data interpretation.", openSource:false, free:false },
+  { id:"zamba", name:"Zamba", type:"application", org:"DrivenData", description:"An open-source machine learning tool for classifying animal species in camera trap videos, designed for conservation researchers without programming experience. Supports wildlife monitoring projects across 10+ countries in Africa and Europe.", url:"https://zamba.drivendata.org/", themes:["Biodiversity & Wildlife"], accessibility:"Free, open-source (MIT License; pip installable)", languages:["English"], aiType:"Traditional (computer vision)", skillLevel:"Advanced", skillNote:"Python command-line tool (pip install); requires programming skills to classify camera trap videos.", openSource:true, free:true },
+  { id:"amazon-mining-watch", name:"Amazon Mining Watch", type:"application", org:"Research & advocacy consortium", description:"An open-source AI system using convolutional neural networks to detect illegal gold mining and deforestation from satellite imagery across all nine Amazonian countries, with 99.2% reported accuracy. Used by Indigenous groups including the Hutukara Yanomami Association and by investigative journalists. Over a third of detected sites fall within Indigenous territories.", url:"https://amazonminingwatch.org", themes:["Extractives & Pollution","Forests & Land"], accessibility:"Free, open-source; open-access platform and code", languages:["English","Portuguese","Spanish"], aiType:"Traditional (computer vision)", skillLevel:"Intermediate", skillNote:"Open-access web platform for viewing satellite-based mining detection; interpreting outputs requires domain knowledge.", openSource:true, free:true },
+  { id:"papa-reo", name:"Papa Reo", type:"application", org:"Te Hiku Media", description:"An Indigenous Māori-led automatic speech recognition platform achieving 92% accuracy for te reo Māori. Built on over 1,000 hours of community-contributed recordings collected over 30 years. Governed by the Kaitiakitanga License, prohibiting surveillance, data mining, or uses inconsistent with Māori values. The framework has informed similar projects by Native Hawaiian and Mohawk communities.", url:"https://papareo.nz/", themes:["Cultural Sovereignty"], accessibility:"Free; Kaitiakitanga License (Indigenous data sovereignty, access governed by Te Hiku Media)", languages:["Te reo Māori"], aiType:"Traditional (ASR)", skillLevel:"Intermediate", skillNote:"Transcription platform (Kaituhi) usable with general digital skills; underlying ASR models require expert knowledge.", openSource:false, free:true },
+  { id:"rfcx-guardian", name:"RFCx Guardian", type:"application", org:"Rainforest Connection", description:"A solar-powered acoustic monitoring system using machine learning to detect chainsaws, gunshots, and vehicles in real time, sending alerts to rangers and community defenders. Deployed in 22+ countries protecting over 750,000 hectares, including with the Tembé Indigenous community in Brazil. Converts recycled smartphones into forest-mounted listening devices.", url:"https://rfcx.org/guardian", themes:["Forests & Land","Extractives & Pollution","Biodiversity & Wildlife"], accessibility:"Free platform; hardware costs for sensor deployment (devices provided through partnerships).", languages:["English"], aiType:"Traditional (predictive)", skillLevel:"Intermediate", skillNote:"Receiving alerts is basic, but deploying solar-powered acoustic sensors requires hardware installation and configuration.", openSource:false, free:true },
+  { id:"surfperch", name:"SurfPerch", type:"application", org:"Google Research", description:"An AI model assessing coral reef health by analysing underwater soundscapes, where healthy reefs produce distinct acoustic signatures compared to degraded ones. Trained using over 400 hours of audio labelled through 'Calling in Our Corals' citizen science initiative. Applied in the Philippines and Indonesia.", url:"https://blog.google/outreach-initiatives/arts-culture/a-new-ai-tool-to-help-monitor-coral-reef-health/", themes:["Marine & Freshwater","Biodiversity & Wildlife"], accessibility:"Free, open-source; model available via Google Research and Kaggle", languages:["English"], aiType:"Traditional (predictive)", skillLevel:"Advanced", skillNote:"AI model on Kaggle; requires ML knowledge to fine-tune and deploy for reef sound analysis.", openSource:true, free:true },
+  { id:"sand-mining-watch", name:"Sand Mining Watch", type:"application", org:"UC Berkeley / Veditum Foundation", description:"A deep learning tool for detecting illegal sand mining in rivers from satellite imagery, developed with Mozilla Foundation funding. Sand mining is linked to significant ecological damage and documented threats against journalists and community defenders. Being piloted in India with the Wildlife Conservation Trust.", url:"http://www.globalpolicy.science/sand-mining-watch", themes:["Marine & Freshwater","Extractives & Pollution"], accessibility:"Free, open-source; code on GitHub", languages:["English"], aiType:"Traditional (computer vision)", skillLevel:"Advanced", skillNote:"Code on GitHub; requires programming and satellite imagery processing skills.", openSource:true, free:true },
+  { id:"methanemapper", name:"MethaneMapper", type:"application", org:"UC Santa Barbara / Mozilla Foundation", description:"An open-source deep learning system for detecting methane plumes from satellite and airborne hyperspectral imagery. Addresses documented discrepancies between industry-reported emissions and independent atmospheric measurements. Designed for climate researchers, investigative journalists, and legal teams pursuing emissions accountability.", url:"https://github.com/UCSB-VRL/MethaneMapper", themes:["Extractives & Pollution","Climate & Disaster"], accessibility:"Free, open-source (MIT License); code on GitHub", languages:["English"], aiType:"Traditional (computer vision)", skillLevel:"Advanced", skillNote:"Deep learning code on GitHub; requires programming and hyperspectral imagery expertise.", openSource:true, free:true },
+  { id:"indictrans2", name:"IndicTrans2", type:"application", org:"AI4Bharat / IIT Madras", description:"An open-source machine translation model supporting all 22 scheduled Indian languages including low-resource languages such as Kashmiri, Manipuri, and Sindhi. Released with ~230 million bitext pairs (BPCC). First open-source model to achieve competitive performance with commercial systems across all constitutionally recognised Indian languages.", url:"https://github.com/AI4Bharat/IndicTrans2", themes:["Cultural Sovereignty"], accessibility:"Free, open-source (MIT License); models on Hugging Face", languages:["English","Assamese","Bengali","Bodo","Dogri","Gujarati","Hindi","Kannada","Kashmiri","Konkani","Maithili","Malayalam","Manipuri","Marathi","Nepali","Odia","Punjabi","Sanskrit","Santali","Sindhi","Tamil","Telugu","Urdu"], aiType:"Traditional (NLP)", skillLevel:"Advanced", skillNote:"Models on Hugging Face and GitHub; requires programming to integrate machine translation.", openSource:true, free:true },
+  { id:"ulizallama", name:"UlizaLlama", type:"application", org:"Jacaranda Health (Kenya)", description:"An open-source large language model fine-tuned from Meta's Llama 2 to support Swahili, Hausa, Yoruba, isiXhosa, and isiZulu. Built to improve an SMS-based maternal health platform (PROMPTS) serving mothers across Kenya, Ghana, and Nigeria. Designed for self-hosting to ensure data privacy, with a toolkit for other organisations to adapt the model.", url:"https://huggingface.co/Jacaranda/UlizaLlama", themes:["Health","Cultural Sovereignty"], accessibility:"Free, open-source (Hugging Face; self-hosting required). Commercial use requires contacting Jacaranda Health.", languages:["Swahili","English"], aiType:"Traditional (generative constrained)", skillLevel:"Advanced", skillNote:"Model on Hugging Face; requires self-hosting infrastructure and ML fine-tuning knowledge.", openSource:true, free:true },
+];
+
+const ALL_THEMES = ["Agriculture & Food Security","Biodiversity & Wildlife","Climate & Disaster","Cultural Sovereignty","Extractives & Pollution","Forests & Land","Health","Marine & Freshwater"];
+
+// State
+let state = { search: "", themes: [], skill: "All", type: "All", openSource: false, free: false };
+
+function toggleAbout() {
+  const text = document.getElementById("about-text");
+  const btn = document.getElementById("about-toggle");
+  if (text.style.display === "none") {
+    text.style.display = "block";
+    btn.textContent = "Hide details ↑";
+  } else {
+    text.style.display = "none";
+    btn.textContent = "About this directory ↓";
+  }
+}
+
+function getFiltered() {
+  return TOOLS.filter(t => {
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      if (!(t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.org.toLowerCase().includes(q) || t.languages.some(l => l.toLowerCase().includes(q)) || t.themes.some(th => th.toLowerCase().includes(q)))) return false;
+    }
+    if (state.themes.length > 0 && !state.themes.some(th => t.themes.includes(th))) return false;
+    if (state.skill !== "All" && t.skillLevel !== state.skill) return false;
+    if (state.type === "Frameworks" && t.type !== "framework") return false;
+    if (state.type === "Applications" && t.type !== "application") return false;
+    if (state.openSource && !t.openSource) return false;
+    if (state.free && !t.free) return false;
+    return true;
+  });
+}
+
+function hasFilters() {
+  return state.search || state.themes.length || state.skill !== "All" || state.type !== "All" || state.openSource || state.free;
+}
+
+function clearAll() {
+  state = { search: "", themes: [], skill: "All", type: "All", openSource: false, free: false };
+  document.getElementById("search").value = "";
+  renderSidebar();
+  renderTools();
+}
+
+function toggleTheme(t) {
+  const i = state.themes.indexOf(t);
+  if (i >= 0) state.themes.splice(i, 1); else state.themes.push(t);
+  renderSidebar();
+  renderTools();
+}
+
+function setSkill(s) { state.skill = s; renderSidebar(); renderTools(); }
+function setType(t) { state.type = t; renderSidebar(); renderTools(); }
+function toggleFree() { state.free = !state.free; renderSidebar(); renderTools(); }
+function toggleOSS() { state.openSource = !state.openSource; renderSidebar(); renderTools(); }
+
+function renderSidebar() {
+  const themeCounts = {};
+  ALL_THEMES.forEach(t => { themeCounts[t] = TOOLS.filter(tool => tool.themes.includes(t)).length; });
+
+  let html = '';
+  html += '<div class="side-label" style="margin-top:4px">Themes</div>';
+  html += `<div class="side-item ${state.themes.length === 0 ? 'active' : ''}" onclick="state.themes=[];renderSidebar();renderTools()"><span>All themes</span><span class="side-count">${TOOLS.length}</span></div>`;
+  ALL_THEMES.forEach(t => {
+    html += `<div class="side-item ${state.themes.includes(t) ? 'active' : ''}" onclick="toggleTheme('${t.replace(/'/g,"\\'")}')"><span>${t}</span><span class="side-count">${themeCounts[t]}</span></div>`;
+  });
+
+  html += '<div class="side-section"><div class="side-label">Type</div>';
+  ["All","Applications","Frameworks"].forEach(t => {
+    const c = t === "All" ? TOOLS.length : t === "Applications" ? TOOLS.filter(x=>x.type==="application").length : TOOLS.filter(x=>x.type==="framework").length;
+    html += `<div class="side-item ${state.type === t ? 'active' : ''}" onclick="setType('${t}')"><span>${t}</span><span class="side-count">${c}</span></div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="side-section"><div class="side-label">Skill Level</div>';
+  ["All","Basic","Intermediate","Advanced"].forEach(s => {
+    const c = s === "All" ? TOOLS.length : TOOLS.filter(x=>x.skillLevel===s).length;
+    html += `<div class="side-item ${state.skill === s ? 'active' : ''}" onclick="setSkill('${s}')"><span>${s}</span><span class="side-count">${c}</span></div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="side-section">';
+  html += `<div class="side-item ${state.free ? 'active' : ''}" onclick="toggleFree()"><span>${state.free ? '✓ ' : ''}Free only</span></div>`;
+  html += `<div class="side-item ${state.openSource ? 'active' : ''}" onclick="toggleOSS()"><span>${state.openSource ? '✓ ' : ''}Open source only</span></div>`;
+  html += '</div>';
+
+  if (hasFilters()) {
+    html += '<button class="clear-btn" onclick="clearAll()">Clear all filters</button>';
+  }
+
+  html += `<div class="contribute">
+    <div class="contribute-title">Contribute to Rooted AI</div>
+    <p class="contribute-desc">Don't see an application that should be here? Please ensure it is relevant before submitting.</p>
+    <input type="text" id="submit-link" placeholder="Tool link">
+    <textarea id="submit-note" rows="3" placeholder="Brief description (optional)"></textarea>
+    <button onclick="submitTool()">Submit</button>
+  </div>`;
+
+  document.getElementById("sidebar").innerHTML = html;
+}
+
+function renderTools() {
+  state.search = document.getElementById("search").value;
+  const filtered = getFiltered();
+  const countEl = document.getElementById("result-count");
+  countEl.textContent = filtered.length + " result" + (filtered.length !== 1 ? "s" : "") + (hasFilters() ? " (filtered)" : "");
+
+  if (filtered.length === 0) {
+    document.getElementById("tool-list").innerHTML = '<div style="padding:32px 0;color:#aaa;font-size:13.5px">No tools match your current filters. <button class="clear-link" onclick="clearAll()">Clear filters</button></div>';
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(tool => {
+    const pillClass = "pill pill-" + tool.skillLevel.toLowerCase();
+    let tags = `<span class="${pillClass}">${tool.skillLevel}</span>`;
+    if (tool.free) tags += '<span class="pill pill-free">Free</span>';
+    if (tool.openSource) tags += '<span class="pill pill-oss">Open Source</span>';
+    tool.themes.forEach(t => { tags += `<span class="theme-tag">${t}</span>`; });
+    const fwTag = tool.type === "framework" ? ' <span class="pill pill-framework">Framework</span>' : '';
+
+    html += `<div class="tool-row" onclick="openDrawer('${tool.id}')">
+      <div><span class="tool-name">${tool.name}</span>${fwTag}</div>
+      <div class="tool-org">${tool.org}</div>
+      <div class="tool-desc">${tool.description}</div>
+      <div class="tool-tags">${tags}</div>
+    </div>`;
+  });
+
+  document.getElementById("tool-list").innerHTML = html;
+}
+
+function openDrawer(id) {
+  const tool = TOOLS.find(t => t.id === id);
+  if (!tool) return;
+
+  let pills = '';
+  if (tool.type === "framework") pills += '<span class="pill pill-framework">Accountability Framework</span> ';
+  pills += `<span class="pill pill-${tool.skillLevel.toLowerCase()}">${tool.skillLevel}</span> `;
+  if (tool.free) pills += '<span class="pill pill-free">Free</span> ';
+  if (tool.openSource) pills += '<span class="pill pill-oss">Open Source</span> ';
+
+  let themeTags = '';
+  tool.themes.forEach(t => { themeTags += `<span class="theme-tag">${t}</span> `; });
+
+  const fields = [
+    { l: "Accessibility", v: tool.accessibility },
+    { l: "AI Type", v: tool.aiType },
+    { l: "Skill Level", v: tool.skillLevel + ": " + tool.skillNote },
+    { l: "Languages", v: tool.languages.join(", ") },
+  ];
+
+  let fieldsHtml = '';
+  fields.forEach(f => {
+    fieldsHtml += `<div class="detail-field"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`;
+  });
+
+  document.getElementById("drawer").innerHTML = `
+    <div class="drawer-header">
+      <div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">${pills}</div>
+        <h2 class="drawer-title">${tool.name}</h2>
+        <div class="drawer-org">${tool.org}</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    ${themeTags ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px">' + themeTags + '</div>' : ''}
+    <p class="drawer-desc">${tool.description}</p>
+    <div>${fieldsHtml}</div>
+    <a class="drawer-link" href="${tool.url}" target="_blank" rel="noopener noreferrer">Visit tool ↗</a>
+  `;
+
+  document.getElementById("overlay").classList.remove("hidden");
+}
+
+function closeDrawer() {
+  document.getElementById("overlay").classList.add("hidden");
+}
+
+function submitTool() {
+  const link = document.getElementById("submit-link").value;
+  const note = document.getElementById("submit-note").value;
+  const body = "Tool link: " + link + (note ? "\n\nNote: " + note : "");
+  window.location.href = "mailto:tofighi.adrien@gmail.com?subject=Rooted AI submission&body=" + encodeURIComponent(body);
+}
+
+// Init
+renderSidebar();
+renderTools();
+</script>
+</body>
+</html>
